@@ -32,7 +32,7 @@ chown -R jenkins:jenkins /home/jenkins/.m2
 if [[ $# -eq 1 ]]; then
 
 	# if `docker run` only has one arguments, we assume user is running alternate command like `bash` to inspect the image
-	exec sudo -u jenkins "$@"
+	exec su jenkins -l -c "$@"
 
 else
 
@@ -47,5 +47,5 @@ else
 		URL="-url $JENKINS_URL"
 	fi
 
-	exec sudo -u jenkins java $JAVA_OPTS -Duser.home=/home/jenkins -cp /usr/share/jenkins/slave.jar hudson.remoting.jnlp.Main -headless $TUNNEL $URL "$@"
+	exec su jenkins -l -c java $JAVA_OPTS -Duser.home=/home/jenkins -cp /usr/share/jenkins/slave.jar hudson.remoting.jnlp.Main -headless $TUNNEL $URL "$@"
 fi
