@@ -27,13 +27,10 @@
 # * JENKINS_TUNNEL : HOST:PORT for a tunnel to route TCP traffic to jenkins host, when jenkins can't be directly accessed over network
 # * JENKINS_URL : alternate jenkins URL
 
-
-chown -R jenkins:jenkins /home/jenkins
-
 if [[ $# -eq 1 ]]; then
 
 	# if `docker run` only has one arguments, we assume user is running alternate command like `bash` to inspect the image
-	exec sudo -u jenkins "$@"
+	exec "$@"
 
 else
 
@@ -48,5 +45,5 @@ else
 		URL="-url $JENKINS_URL"
 	fi
 
-	exec sudo -u jenkins java $JAVA_OPTS -Duser.home=/home/jenkins -cp /usr/share/jenkins/slave.jar hudson.remoting.jnlp.Main -headless $TUNNEL $URL "$@"
+	exec java $JAVA_OPTS -Duser.home=/home/jenkins -cp /usr/share/jenkins/slave.jar hudson.remoting.jnlp.Main -headless $TUNNEL $URL "$@"
 fi

@@ -12,4 +12,9 @@ RUN curl --create-dirs -sSLo /usr/share/jenkins/slave.jar https://repo.jenkins-c
 
 COPY jenkins-slave /usr/local/bin/jenkins-slave
 
+RUN mkdir -p /home/jenkins/.m2/repository ; chown -R jenkins:jenkins /home/jenkins
+VOLUME ["/home/jenkins/.m2/repository/"]
+WORKDIR /home/jenkins
+USER jenkins 
+
 ENTRYPOINT ["/opt/bin/entry_point.sh", "/usr/local/bin/jenkins-slave"]
